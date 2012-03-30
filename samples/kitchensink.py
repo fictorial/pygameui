@@ -51,7 +51,7 @@ class KitchenSinkScene(ui.Scene):
         self.greet_button.on_clicked.connect(self.greet)
         self.add_child(self.greet_button)
 
-        self.image_view = ui.ImageView.view_for_image_named('logo')
+        self.image_view = ui.view_for_image_named('logo')
         self.image_view.frame.right = self.frame.right - MARGIN
         self.image_view.frame.top = MARGIN
         self.add_child(self.image_view)
@@ -196,21 +196,21 @@ class KitchenSinkScene(ui.Scene):
         if not self.running_task:
             self.task_button.set_enabled(False)
             self.progress_view.hidden = False
-        self.progress_view.set_progress(0.0)
+        self.progress_view.progress = 0
         self.running_task = True
 
     def update(self, dt):
         ui.Scene.update(self, dt)
         if self.running_task:
-            progress = min(1.0, self.progress_view.progress() + 0.01)
-            self.progress_view.set_progress(progress)
-            self.running_task = (self.progress_view.progress() < 1.0)
+            progress = min(1.0, self.progress_view.progress + 0.01)
+            self.progress_view.progress = progress
+            self.running_task = (self.progress_view.progress < 1.0)
             self.task_button.set_enabled(not self.running_task)
             if self.task_button.interactive:
                 msg = "I'M FINISHED!"
                 alert_view = ui.AlertView('Milkshake', msg, ui.OK)
                 ui.scene.current.add_child(alert_view)
-                self.progress_view.set_progress(0)
+                self.progress_view.progress = 0
                 self.progress_view.hidden = True
 
 

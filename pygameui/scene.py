@@ -29,10 +29,7 @@ def pop():
 
 
 class Scene(view.View):
-    """A view that takes up the entire window content area;
-    scene space = window space.
-
-    """
+    """A view that takes up the entire window content area."""
 
     def __init__(self):
         view.View.__init__(self, window.rect)

@@ -8,6 +8,7 @@ import focus
 
 class View(object):
     """A rectangular portion of the window.
+
     Views may have zero or more child views contained within it.
 
     signals:
@@ -197,7 +198,7 @@ class View(object):
 
         for child in reversed(self.children):
             view = child.hit(local_pt)
-            if view:
+            if view is not None:
                 return view
 
         return self

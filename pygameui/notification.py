@@ -12,15 +12,15 @@ IDLE = 2
 
 
 class NotificationView(dialog.DialogView):
-    """A notification that drops down from the top of
-    the window for a few seconds
+    """A notification alert view.
 
-    autoclose
-        Automatically close the notification.
+    The notification animates down from the top of
+    the window and can be closed by mouse clock or
+    automatically close itself after a few seconds.
 
-    autoclosetimeout
-        How long to wait before closing the notification.
-        Default: 3 (seconds).
+    auto_close -- Automatically close the notification (default: True).
+    auto_close_after -- How long to wait before closing the
+                        notification (default: 3 (seconds)).
 
     """
 
@@ -42,8 +42,8 @@ class NotificationView(dialog.DialogView):
         self.border_color = theme.dark_accent_color
         self.border_width = 2
 
-        self.autoclose = True
-        self.autocloseafter = 3
+        self.auto_close = True
+        self.auto_close_after = 3
         self.elapsed = 0
 
         message_label.frame.topleft = (padding, padding)
@@ -74,5 +74,5 @@ class NotificationView(dialog.DialogView):
                 self.rm()
         elif self.state == IDLE:
             self.elapsed += dt
-            if self.elapsed > self.autocloseafter:
+            if self.elapsed > self.auto_close_after:
                 self.state = UP

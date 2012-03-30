@@ -7,11 +7,13 @@ import callback
 
 
 class TextField(view.View):
-    """Editable single line of text; no fancy keybindings; just backspace.
+    """Editable single line of text.
+
+    There are no fancy keybindings; just backspace.
 
     signals:
-        on_text_change(textfield, text)
-        on_return(textfield, text)
+    on_text_change(text_field, text)
+    on_return(text_field, text)
 
     """
 
@@ -50,7 +52,7 @@ class TextField(view.View):
             return
 
         if key == pygame.K_BACKSPACE:
-            self.text = self.text[0: - 1]
+            self.text = self.text[0:-1]
         elif key == pygame.K_RETURN:
             can_submit = True
             if self.placeholder and self.text == self.placeholder:

@@ -30,7 +30,6 @@ class ScrollbarThumbView(view.View):
 
     def key_down(self, key, code):
         """simulate mouse drag to scroll with keyboard"""
-
         if self.direction == VERTICAL:
             if key == pygame.K_DOWN:
                 self.mouse_drag((0, 0), (0, 1))
@@ -47,6 +46,7 @@ class ScrollbarView(view.View):
     """Ye olde scrollbar"""
 
     def __init__(self, scroll_view, direction):
+        """Create a scrollbar for the given scrollable view."""
         if direction == VERTICAL:
             height = scroll_view.frame.h - theme.scrollbar_size
             frame = pygame.Rect(0, 0, theme.scrollbar_size, height)
@@ -139,11 +139,10 @@ class ScrollbarView(view.View):
 
 
 class ScrollView(view.View):
-    """A view that contains another potentially larger view allowing scrolling
-    via HORIZONTAL and / or VERTICAL scrollbar size.
+    """A view that scrolls a content view
 
     signals:
-        on_scrolled(scroll_view) -> content offset updated
+    on_scrolled(scroll_view) -> content offset updated
 
     """
 

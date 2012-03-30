@@ -8,7 +8,7 @@ class Button(label.Label):
     """A button with a text caption.
 
     signals:
-        on_clicked(button, mousebutton)
+    on_clicked(button, mousebutton)
 
     """
 

@@ -5,15 +5,18 @@ import asset
 
 
 class ImageView(view.View):
-    """Displays an image.
+    """A view for displaying an image.
 
-    The only content scaling mode currently supported is 'scale-to-fill'.
+    The only 'content scaling mode' currently supported is 'scale-to-fill'.
 
     """
 
     def __init__(self, frame, image):
-        """Use a frame.size of (0, 0) to have it resized to
-        the image's size
+        """Create an image view from an image.
+
+        frame.topleft -- where to position the view.
+        frame.size -- if (0, 0) the frame.size is set to the image's size;
+                      otherwise, the image is scaled to this size.
 
         """
 
@@ -21,23 +24,23 @@ class ImageView(view.View):
         if frame.w == 0 and frame.h == 0:
             frame.size = image.get_size()
         view.View.__init__(self, frame)
-        self.set_image(image)
+        self.image = image
         self.interactive = False
         self.background_color = None
 
-    @staticmethod
-    def view_for_image_named(image_name):
-        """The view's frame size will match that of the given image"""
+    @property
+    def image(self):
+        return self.surface
 
-        image = asset.get_image(image_name)
-        if not image:
-            return None
-        return ImageView(pygame.Rect((0, 0), image.get_size()), image)
-
-    def set_image(self, image):
-        """Sets the image displayed, scaling it to fit
-        in the current frame.
-
-        """
-
+    @image.setter
+    def image(self, image):
         self.surface = asset.scale_image(image, self.frame.size)
+
+
+def view_for_image_named(image_name):
+    """Create an ImageView for the given image."""
+
+    image = asset.get_image(image_name)
+    if not image:
+        return None
+    return ImageView(pygame.Rect((0, 0), image.get_size()), image)

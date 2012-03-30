@@ -6,10 +6,7 @@ import focus
 
 
 class DialogView(view.View):
-    """A view that floats above the metaphorical desktop and thus
-    has a shadow underneath.
-
-    """
+    """A non-modal dialog box."""
 
     def __init__(self, frame):
         view.View.__init__(self, frame)

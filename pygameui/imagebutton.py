@@ -11,7 +11,7 @@ class ImageButton(view.View):
     """A button that uses an image instead of a text caption.
 
     signals:
-        on_clicked(button, mousebutton)
+    on_clicked(button, mousebutton)
 
     """
 
@@ -27,7 +27,7 @@ class ImageButton(view.View):
         self.image_view.center()
 
     def decorate(self):
-        """Add border and use standard button bg coloring."""
+        """Add border and use standard button background coloring."""
 
         self.decorated = True
         self.border_width = 1
@@ -35,7 +35,7 @@ class ImageButton(view.View):
         self.background_color = theme.button_background_color
 
     def undecorate(self):
-        """Remove border and do not use button bg coloring."""
+        """Remove border and do not use button background coloring."""
 
         self.decorated = False
         self.border_width = 0

@@ -10,8 +10,8 @@ class Checkbox(view.View):
     """A checkbox.
 
     signals:
-        on_checked(checkbox)
-        on_unchecked(checkbox)
+    on_checked(checkbox)
+    on_unchecked(checkbox)
 
     """
 

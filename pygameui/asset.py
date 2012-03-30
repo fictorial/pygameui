@@ -19,16 +19,17 @@ def get_font(size, usebold=False):
     if usebold:
         path = bold_path
 
-    key = '%s - %d' % (path, size)
+    key = '%s:%d' % (path, size)
     try:
         font = fonts[key]
     except KeyError:
         try:
             font = pygame.font.Font(path, size)
-            fonts[key] = font
-        except:
-            print 'WARNING: failed to load font', path
+        except pygame.error, e:
+            print 'WARNING: failed to load font', path, e
             font = pygame.font.SysFont('helvetica,arial', size, usebold)
+        else:
+            fonts[key] = font
     return font
 
 

@@ -51,7 +51,7 @@ class SliderView(view.View):
     """Drag a thumb to select a value from a given range
 
     signals:
-        on_value_changed(sliderview, value)
+    on_value_changed(sliderview, value)
 
     """
 
@@ -73,7 +73,7 @@ class SliderView(view.View):
         self.add_child(self.thumb)
 
         self._value = None
-        self.set_value((low + high) / 2.0)
+        self.value = (low + high) / 2.0
 
         self.background_color = theme.clear_color
 
@@ -98,16 +98,18 @@ class SliderView(view.View):
         self.track = SliderTrackView(trackrect, self.direction)
         self.add_child(self.track)
 
-    def set_value(self, val, update_thumb=True):
+    @property
+    def value(self):
+        """value is in the range [low, high]"""
+        return self._value
+
+    @value.setter
+    def value(self, val):
         if val == self._value:
             return
-
         self._value = max(self.low, min(self.high, val))
         self.track.value_percent = (val - self.low) / (self.high - self.low)
-
-        if update_thumb:
-            self._update_thumb()
-
+        self._update_thumb()
         self.on_value_changed(self, self._value)
 
     def appeared(self):
@@ -131,7 +133,7 @@ class SliderView(view.View):
             height = self.frame.h - self.thumb.frame.h
             t = percent_px / float(height)
             value = self.high + t * (self.low - self.high)
-            self.set_value(value, update_thumb=False)
+            self.value = value
         else:
             self.thumb.frame.centery = self.frame.h // 2
             self.thumb.frame.left = max(0, self.thumb.frame.left)
@@ -140,4 +142,4 @@ class SliderView(view.View):
             width = self.frame.w - self.thumb.frame.w
             t = percent_px / float(width)
             value = self.low + t * (self.high - self.low)
-            self.set_value(value, update_thumb=False)
+            self.value = value

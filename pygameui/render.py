@@ -1,17 +1,18 @@
 import pygame
 
 
-def fillgradient(surface, color, gradient, rect=None,
-    vertical=True, forward=True):
+def fill_gradient(surface, color, gradient,
+                 rect=None, vertical=True, forward=True):
 
-    """
-    fill a surface with a gradient pattern
-        color: starting color
-        gradient: final color
-        rect: area to fill; default is surface's rect
-        vertical: True=vertical; False=horizontal
-        forward: True=forward; False=reverse
-    Pygame recipe: http: // www.pygame.org / wiki / GradientCode
+    """Fill a surface with a linear gradient pattern.
+
+    color -- starting color
+    gradient -- final color
+    rect -- area to fill; default is surface's rect
+    vertical -- True=vertical; False=horizontal
+    forward -- True=forward; False=reverse
+
+    See http://www.pygame.org/wiki/GradientCode
     """
 
     if rect is None:
@@ -51,6 +52,7 @@ def fillgradient(surface, color, gradient, rect=None,
 
 def fillrect(surface, color, rect, vertical=True):
     if len(color) == 2:  # gradient
-        fillgradient(surface, color[0], color[1], rect=rect, vertical=vertical)
+        fill_gradient(surface, color[0], color[1],
+                      rect=rect, vertical=vertical)
     else:
         surface.fill(color, rect)

@@ -10,17 +10,17 @@ import button
 
 
 class SelectView(view.View):
-    """Drop - down selector with single selection support.
+    """Drop-down selector with single selection support.
 
-    callback.Signals:
-        on_list_opened(selectview, yesno) -> list opened / closed
-        on_selection_changed(selectview, item, index) -> item selected
+    signals:
+    on_list_opened(select_view, yesno) -> list opened / closed
+    on_selection_changed(select_view, item, index) -> item selected
     """
 
     def __init__(self, frame, items):
         """items: list of views; str(item) used for selection display"""
-
         assert len(items) > 0
+
         width = frame.w + theme.scrollbar_size
         height = theme.label_height
         view.View.__init__(self, pygame.Rect(frame.topleft, (width, height)))

@@ -5,7 +5,9 @@ import asset
 
 
 class FlipbookView(view.View):
-    """Displays animation frames stored in equally sized rectangles of
+    """Flipbook-style image animation view.
+
+    Displays animation frames stored in equally sized rectangles of
     a single "sprite sheet" image file.
 
     Only works with sheets with N columns in a single row.
@@ -13,8 +15,11 @@ class FlipbookView(view.View):
     """
 
     def __init__(self, frame, name):
-        """frame.size is the size of each subframe within the sheet
-        in file with 'name'.
+        """Create a flipbook view.
+
+        frame.topleft -- where to position the view.
+        frame.size -- size of each sub-image.
+        name -- name of the spritesheet image asset.
 
         """
 

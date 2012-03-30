@@ -11,10 +11,7 @@ CANCEL = 2
 
 
 class AlertView(dialog.DialogView):
-    """A non-modal alert dialog box with a title, message, a set of
-    buttons, and an optional image.
-
-    """
+    """A non-modal alert dialog box."""
 
     def __init__(self, title, message, buttons=0xFF):
         padding = theme.padding

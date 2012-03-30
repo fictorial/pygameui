@@ -6,7 +6,7 @@ import theme
 
 
 class GridView(view.View):
-    """A view which renders a grid using lines."""
+    """A view which renders a uniform 2-D grid using lines."""
 
     def __init__(self, frame, spacing=50, line_color=theme.gray_color):
         view.View.__init__(self, frame)

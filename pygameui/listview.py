@@ -7,16 +7,16 @@ import scroll
 
 
 class ListView(view.View):
-    """Vertical list of items with single - selection support.
+    """Vertical list of items with single-selection support.
 
     signals:
-        on_selected(list_view, item, index)     -> item clicked
-        on_deselected(list_view, item, index) -> item clicked when selected
+    on_selected(list_view, item, index)   -> item clicked
+    on_deselected(list_view, item, index) -> item clicked when selected
 
     """
 
     def __init__(self, frame, items):
-        """items: list of views"""
+        """items -- list of views"""
 
         view.View.__init__(self, frame)
         self.background_color = theme.view_background_color
