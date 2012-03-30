@@ -8,10 +8,6 @@ A simple GUI framework for PyGame.
 
 Currently, you have to clone this repo.
 
-In the near future:
-
-    pip install pygameui
-
 ## License
 
 MIT
