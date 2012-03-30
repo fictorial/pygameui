@@ -4,7 +4,6 @@ import dialog
 import window
 import label
 import theme
-import asset
 
 
 DOWN = 0
@@ -26,15 +25,17 @@ class NotificationView(dialog.DialogView):
     """
 
     def __init__(self, msg):
-        message_label = label.Label(pygame.Rect((0, 0),
-            (window.rect.w // 3, window.rect.h // 2)), msg,
-            text_color=theme.dark_gray_color,
-            font=asset.default_font, wrap_mode=label.WORDWRAP)
+        message_label = label.Label(pygame.Rect(
+            (0, 0), (window.rect.w // 3, window.rect.h // 2)),
+            msg, text_color=theme.dark_gray_color,
+            font=theme.default_font,
+            wrap_mode=label.WORDWRAP)
 
         message_label.shrink_wrap()
         text_size = message_label.text_size
         padding = min(20, window.rect.w // 8)
-        framesize = (text_size[0] + padding * 2, text_size[1] + padding * 2)
+        framesize = (text_size[0] + padding * 2,
+                     text_size[1] + padding * 2)
         dialog.DialogView.__init__(self, pygame.Rect((0, 0), framesize))
 
         self.background_color = theme.main_gradient_colors

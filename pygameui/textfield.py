@@ -3,7 +3,6 @@ import pygame
 import view
 import label
 import theme
-import asset
 import callback
 
 
@@ -21,8 +20,10 @@ class TextField(view.View):
         self.text = text or ''
         self.placeholder = placeholder
         self.padding = theme.padding
-        self.label = label.Label(pygame.Rect((0, 0), frame.size),
-            text or placeholder, font=asset.default_font)
+        self.label = label.Label(
+            pygame.Rect((0, 0), frame.size),
+            text or placeholder,
+            font=theme.default_font)
         self.label.halign = label.LEFT
         self.add_child(self.label)
         self.enabled = True
@@ -75,8 +76,9 @@ class TextField(view.View):
             self.label.frame.left = self.padding
 
     def _update_text(self):
-        if len(self.text) == 0 and self.placeholder is not None and \
-            not self.has_focus():
+        if (len(self.text) == 0 and
+            self.placeholder is not None and
+            not self.has_focus()):
             self.label.text_color = theme.light_gray_color
             self.label.text = self.placeholder
         elif len(self.text) >= 0:
@@ -94,12 +96,13 @@ class TextField(view.View):
         if not view.View.draw(self) or not self.has_focus():
             return False
 
-        if not self.blink_cursor or \
-            pygame.time.get_ticks() / theme.cursor_blink_duration % 2 == 0:
+        if (not self.blink_cursor or
+            pygame.time.get_ticks() / theme.cursor_blink_duration % 2 == 0):
             size = self.label.font.size(self.text)
             rect = pygame.Rect(
                 self.label.frame.left + self.label.padding[0] + size[0],
-                self.label.frame.bottom - self.label.padding[1], 10, 2)
+                self.label.frame.bottom - self.label.padding[1],
+                10, 2)
             pygame.draw.rect(self.surface, theme.text_color, rect)
         return True
 

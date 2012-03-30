@@ -21,8 +21,8 @@ class View(object):
         on_blurred(view)
         on_removed(view) (from parent view)
 
-    All mouse points passed to event methods and to slots are in local view
-    coordinates. Use `to_parent` and `to_window` to convert.
+    All mouse points passed to event methods and to slots are in local
+    view coordinates. Use `to_parent` and `to_window` to convert.
 
     """
 
@@ -61,14 +61,13 @@ class View(object):
             return
 
         if self.shadowed:
-            shadowed_frame_size = (
-                self.frame.w + theme.shadow_size,
-                self.frame.h + theme.shadow_size)
-            self.surface = pygame.Surface(shadowed_frame_size,
-                pygame.SRCALPHA, 32)
+            shadowed_frame_size = (self.frame.w + theme.shadow_size,
+                                   self.frame.h + theme.shadow_size)
+            self.surface = pygame.Surface(
+                shadowed_frame_size, pygame.SRCALPHA, 32)
             shadow_image = asset.get_image('shadow')
-            self.shadow_image = asset.scale_image(shadow_image,
-                shadowed_frame_size)
+            self.shadow_image = asset.scale_image(
+                shadow_image, shadowed_frame_size)
         else:
             self.surface = pygame.Surface(self.frame.size, pygame.SRCALPHA, 32)
             self.shadow_image = None
@@ -131,9 +130,8 @@ class View(object):
     def mouse_drag(self, point, delta):
         self.on_mouse_drag(self, point, delta)
 
-        self.frame.topleft = (
-            self.frame.topleft[0] + delta[0],
-            self.frame.topleft[1] + delta[1])
+        self.frame.topleft = (self.frame.topleft[0] + delta[0],
+                              self.frame.topleft[1] + delta[1])
 
         if self.parent:
             self.parent._child_dragged(self)
@@ -163,7 +161,8 @@ class View(object):
             return False
 
         if self.background_color is not None:
-            render.fillrect(self.surface, self.background_color,
+            render.fillrect(
+                self.surface, self.background_color,
                 rect=pygame.Rect((0, 0), self.frame.size))
 
         for child in self.children:
@@ -173,9 +172,9 @@ class View(object):
                 topleft = child.frame.topleft
 
                 if child.shadowed:
-                    self.surface.blit(child.shadow_image, (
-                        topleft[0] - theme.shadow_size // 2,
-                        topleft[1] - theme.shadow_size // 2))
+                    shadow_topleft = (topleft[0] - theme.shadow_size // 2,
+                                      topleft[1] - theme.shadow_size // 2)
+                    self.surface.blit(child.shadow_image, shadow_topleft)
 
                 self.surface.blit(child.surface, topleft)
 
@@ -198,7 +197,8 @@ class View(object):
 
         for child in reversed(self.children):
             view = child.hit(local_pt)
-            if view: return view
+            if view:
+                return view
 
         return self
 

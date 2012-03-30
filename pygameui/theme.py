@@ -1,4 +1,11 @@
-# rudimentary theme support; pair of colors forms a gradient
+"""Rudimentary theme support; pair of colors forms a gradient"""
+
+import asset
+
+
+default_font = None
+default_bold_font = None
+
 
 clear_color = (0, 0, 0, 0)
 black_color = (0, 0, 0)
@@ -40,3 +47,9 @@ button_height = font_size + padding * 2
 scrollbar_size = 18
 shadow_size = 140
 cursor_blink_duration = 450  # ms
+
+
+def init():
+    global default_font, default_bold_font
+    default_font = asset.get_font(font_size)
+    default_bold_font = asset.get_font(font_size, usebold=True)

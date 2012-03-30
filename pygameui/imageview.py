@@ -7,12 +7,15 @@ import asset
 class ImageView(view.View):
     """Displays an image.
 
-    The only content scaling mode currently supported is 'scale - to - fill'.
+    The only content scaling mode currently supported is 'scale-to-fill'.
 
     """
 
     def __init__(self, frame, image):
-        """Use a frame.size of (0, 0) to have it resized to the image's size"""
+        """Use a frame.size of (0, 0) to have it resized to
+        the image's size
+
+        """
 
         assert image is not None
         if frame.w == 0 and frame.h == 0:
@@ -32,7 +35,9 @@ class ImageView(view.View):
         return ImageView(pygame.Rect((0, 0), image.get_size()), image)
 
     def set_image(self, image):
-        """Sets the image displayed, scaling it to fit in the current frame."""
+        """Sets the image displayed, scaling it to fit
+        in the current frame.
+
+        """
 
         self.surface = asset.scale_image(image, self.frame.size)
-

@@ -44,11 +44,13 @@ class GridView(view.View):
             return False
 
         for y in range(0, self.frame.h, self.spacing):
-            pygame.draw.line(self.surface, self.line_color,
+            pygame.draw.line(
+                self.surface, self.line_color,
                 (0, y), (self.frame.w, y))
 
         for x in range(0, self.frame.w, self.spacing):
-            pygame.draw.line(self.surface, self.line_color,
+            pygame.draw.line(
+                self.surface, self.line_color,
                 (x, 0), (x, self.frame.h))
 
         return True

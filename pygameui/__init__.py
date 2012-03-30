@@ -1,12 +1,12 @@
 """A simple GUI framework for Pygame.
 
 This framework is not meant as a competitor to PyQt or other, perhaps more
-formal, GUI frameworks.    Instead, pygameui is but a simple framework for game
+formal, GUI frameworks. Instead, pygameui is but a simple framework for game
 prototypes.
 
 The app is comprised of a stack of scenes; the top-most or current scene is
-what is displayed in the window.    Scenes are comprised of Views which are
-comprised of other Views.    pygameui contains view classes for things like
+what is displayed in the window. Scenes are comprised of Views which are
+comprised of other Views. pygameui contains view classes for things like
 labels, buttons, and scrollbars.
 
 pygameui is a framework, not a library. While you write view controllers in the
@@ -15,7 +15,7 @@ that receives device events (mouse button clicks, keyboard presses, etc.) and
 dispatches the events to the relevant view(s) in your scene(s).
 
 Each view in pygameui is rectangular in shape and whose dimensions are
-determined by the view's "frame".    A view is backed by a Pygame surface.
+determined by the view's "frame". A view is backed by a Pygame surface.
 Altering a view's frame requires that you call 'relayout' which will resize the
 view's backing surface and give each child view a chance to reposition and/or
 resize itself in response.
@@ -33,43 +33,42 @@ AUTHOR = 'Brian Hammond <brian@fictorial.com>'
 COPYRIGHT = 'Copyright (C) 2012 Fictorial LLC.'
 LICENSE = 'MIT'
 
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 
 
 import pygame
 
-import alert
-import button
-import callback
-import checkbox
-import dialog
-import flipbook
+from alert import *
+from button import *
+from callback import *
+from checkbox import *
+from dialog import *
+from flipbook import *
+from grid import *
+from imagebutton import *
+from imageview import *
+from label import *
+from listview import *
+from notification import *
+from progress import *
+from render import *
+from asset import *
+from scroll import *
+from select import *
+from slider import *
+from spinner import *
+from textfield import *
+from view import *
+
 import focus
-import grid
-import imagebutton
-import imageview
-import label
-import listview
-import notification
-import progress
-import render
-import asset
-import scene
-import scroll
-import select
-import slider
-import spinner
-import textfield
-import theme
-import view
 import window
+import scene
+import theme
 
-__all__ = ['alert', 'button', 'callback', 'checkbox', 'dialog', 'flipbook',
-    'focus', 'grid', 'imagebutton', 'imageview', 'label', 'listview',
-    'notification', 'progress', 'render', 'asset', 'scene', 'scroll',
-    'select', 'slider', 'spinner', 'textfield', 'theme', 'view', 'window']
+from scene import Scene
 
 
+Rect = pygame.Rect
 window_surface = None
 
 
@@ -80,7 +79,7 @@ def init(name='', window_size=(640, 480)):
     window_surface = pygame.display.set_mode(window_size)
     pygame.display.set_caption(name)
     window.rect = pygame.Rect((0, 0), window_size)
-    asset.init()
+    theme.init()
 
 
 def run():

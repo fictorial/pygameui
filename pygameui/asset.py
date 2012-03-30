@@ -2,28 +2,16 @@ import os
 import weakref
 import pygame
 
-import theme
-
 
 fonts = weakref.WeakValueDictionary()
 images = weakref.WeakValueDictionary()
 sounds = weakref.WeakValueDictionary()
 
 
-default_font = None
-default_bold_font = None
-
-
 root = os.path.join('..', 'assets')
 
 
-def init():
-    global default_font, default_bold_font
-    default_font = get_font()
-    default_bold_font = get_font(usebold=True)
-
-
-def get_font(size=theme.font_size, usebold=False):
+def get_font(size, usebold=False):
     regular_path = os.path.join(root, 'fonts', 'regular.ttf')
     bold_path = os.path.join(root, 'fonts', 'bold.ttf')
 

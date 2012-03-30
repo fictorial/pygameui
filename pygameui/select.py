@@ -21,14 +21,14 @@ class SelectView(view.View):
         """items: list of views; str(item) used for selection display"""
 
         assert len(items) > 0
-        view.View.__init__(self, pygame.Rect(frame.topleft,
-            (frame.w + theme.scrollbar_size, theme.label_height)))
+        width = frame.w + theme.scrollbar_size
+        height = theme.label_height
+        view.View.__init__(self, pygame.Rect(frame.topleft, (width, height)))
         self.on_selection_changed = callback.Signal()
         self.on_list_opened = callback.Signal()
 
-        self.top_label = label.Label(pygame.Rect(0, 0,
-            frame.w + theme.scrollbar_size - theme.font_size,
-            theme.label_height), '')
+        width = frame.w + theme.scrollbar_size - theme.font_size
+        self.top_label = label.Label(pygame.Rect(0, 0, width, height), '')
         self.top_label.halign = label.LEFT
         self.top_label.border_color = theme.border_color
         self.top_label.border_width = 1
@@ -42,22 +42,23 @@ class SelectView(view.View):
         self.list_view.on_selected.connect(self.selected)
         self.list_view.on_deselected.connect(self.deselected)
 
-        self.scroll_view = scroll.ScrollView(pygame.Rect(0,
-            self.top_label.frame.bottom - 1, frame.w, 80),
+        top = self.top_label.frame.bottom - 1
+        self.scroll_view = scroll.ScrollView(
+            pygame.Rect(0, top, frame.w, 80),
             self.list_view)
         self.scroll_view.hidden = True
         self.add_child(self.scroll_view)
 
+        left = frame.w + theme.scrollbar_size - height
         self.disclosure = button.Button(pygame.Rect(
-            frame.w + theme.scrollbar_size - theme.label_height,
-            0, theme.label_height, theme.label_height), '')
+            left, 0, height, height), '')
         self.disclosure.on_clicked.connect(self._toggle_show_list)
         self.add_child(self.disclosure)
 
     def show_list(self, show=True, *args, **kwargs):
         if show:
-            self.frame.h = self.top_label.frame.h + \
-                self.scroll_view.frame.h - 1
+            self.frame.h = (self.top_label.frame.h +
+                            self.scroll_view.frame.h - 1)
             self.scroll_view.hidden = False
             self.bring_to_front()
         else:

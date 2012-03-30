@@ -4,7 +4,6 @@ import view
 import callback
 import theme
 import label
-import asset
 
 
 class Checkbox(view.View):
@@ -13,6 +12,7 @@ class Checkbox(view.View):
     signals:
         on_checked(checkbox)
         on_unchecked(checkbox)
+
     """
 
     def __init__(self, frame, text):
@@ -21,8 +21,9 @@ class Checkbox(view.View):
         self.checked = False
 
         check_size = frame.h
-        self.check_label = label.Label(pygame.Rect(0, 0,
-            check_size, check_size), ' ', font=asset.default_bold_font)
+        self.check_label = label.Label(pygame.Rect(
+            0, 0, check_size, check_size),
+            ' ', font=theme.default_bold_font)
         self.check_label.interactive = True
         self.check_label.border_color = theme.light_gray_color
         self.check_label.border_width = 1

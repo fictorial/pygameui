@@ -1,5 +1,4 @@
 import label
-import asset
 import callback
 import focus
 import theme
@@ -14,9 +13,10 @@ class Button(label.Label):
     """
 
     def __init__(self, frame, caption):
-        label.Label.__init__(self, frame, caption,
+        label.Label.__init__(
+            self, frame, caption,
             text_color=theme.button_text_color,
-            font=asset.default_bold_font)
+            font=theme.default_bold_font)
         self.on_clicked = callback.Signal()
         self.interactive = True
         self.border_width = 1

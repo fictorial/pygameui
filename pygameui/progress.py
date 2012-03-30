@@ -6,7 +6,8 @@ class ProgressView(slider.SliderView):
     """A progress bar whose progress is in range [0, 1]"""
 
     def __init__(self, frame):
-        slider.SliderView.__init__(self, frame, slider.HORIZONTAL,
+        slider.SliderView.__init__(
+            self, frame, slider.HORIZONTAL,
             0.0, 1.0, show_thumb=False)
         self.interactive = False
         self.set_progress(0)

@@ -4,7 +4,6 @@ import dialog
 import label
 import theme
 import button
-import asset
 
 
 OK = 1
@@ -20,8 +19,8 @@ class AlertView(dialog.DialogView):
     def __init__(self, title, message, buttons=0xFF):
         padding = theme.padding
 
-        button_width = asset.default_bold_font.size('Cancel')[0] + \
-            padding * 2
+        text_width = theme.default_bold_font.size('Cancel')[0]
+        button_width = text_width + padding * 2
         buttons_width = button_width * 2 + padding * 3
 
         message_label = label.Label(pygame.Rect(
@@ -34,10 +33,10 @@ class AlertView(dialog.DialogView):
         frame = pygame.Rect((0, 0), size)
         dialog.DialogView.__init__(self, frame)
 
-        title_label = label.Label(pygame.Rect(padding, padding,
-            frame.w - padding * 2, theme.label_height), title,
-            text_color=theme.light_gray_color, font=asset.default_bold_font,
-            text_shadow_color=None)
+        title_label = label.Label(pygame.Rect(
+            padding, padding, frame.w - padding * 2, theme.label_height),
+            title, text_color=theme.light_gray_color,
+            font=theme.default_bold_font, text_shadow_color=None)
         title_label.background_color = theme.alert_title_background_color
         self.add_child(title_label)
 

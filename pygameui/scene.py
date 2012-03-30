@@ -1,5 +1,3 @@
-import pygame
-
 import view
 import window
 import focus
@@ -9,7 +7,7 @@ stack = []
 current = None
 
 
-def pushscene(scene):
+def push(scene):
     global current
     stack.append(scene)
     current = scene
@@ -17,7 +15,7 @@ def pushscene(scene):
     focus.set(current)
 
 
-def popscene():
+def pop():
     global current
 
     if len(stack) > 0:
@@ -40,5 +38,7 @@ class Scene(view.View):
         view.View.__init__(self, window.rect)
 
     def key_down(self, key, code):
+        import pygame
+
         if key == pygame.K_ESCAPE:
-            popscene()
+            pop()

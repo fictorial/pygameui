@@ -29,20 +29,20 @@ class SliderTrackView(view.View):
 
         if self.value_percent > 0:
             if self.direction == VERTICAL:
+                w = self.frame.w - self.border_width - 1
                 h = self.value_percent * self.frame.h - self.border_width - 1
-                rect = pygame.Rect(
-                    self.border_width,
-                    self.frame.h - h + self.border_width,
-                    self.frame.w - self.border_width - 1, h)
+                x = self.border_width
+                y = self.frame.h - h + self.border_width
             else:
-                rect = pygame.Rect(
-                    self.border_width,
-                    self.border_width,
-                    self.value_percent * self.frame.w - self.border_width - 1,
-                    self.frame.h - self.border_width)
+                x = self.border_width
+                y = self.border_width
+                w = self.value_percent * self.frame.w - self.border_width - 1
+                h = self.frame.h - self.border_width
 
-            render.fillrect(self.surface, self.value_color,
-                rect=rect, vertical=(self.direction == HORIZONTAL))
+            rect = pygame.Rect(x, y, w, h)
+            render.fillrect(
+                self.surface, self.value_color, rect=rect,
+                vertical=(self.direction == HORIZONTAL))
 
         return True
 
@@ -127,15 +127,17 @@ class SliderView(view.View):
             self.thumb.frame.centerx = self.frame.w // 2
             self.thumb.frame.top = max(0, self.thumb.frame.top)
             self.thumb.frame.bottom = min(self.frame.h, self.thumb.frame.bottom)
-            t = (self.thumb.frame.centery - self.thumb.frame.h // 2) / \
-                float(self.frame.h - self.thumb.frame.h)
+            percent_px = self.thumb.frame.centery - self.thumb.frame.h // 2
+            height = self.frame.h - self.thumb.frame.h
+            t = percent_px / float(height)
             value = self.high + t * (self.low - self.high)
             self.set_value(value, update_thumb=False)
         else:
             self.thumb.frame.centery = self.frame.h // 2
             self.thumb.frame.left = max(0, self.thumb.frame.left)
             self.thumb.frame.right = min(self.frame.w, self.thumb.frame.right)
-            t = (self.thumb.frame.centerx - self.thumb.frame.w // 2) / \
-                float(self.frame.w - self.thumb.frame.w)
+            percent_px = self.thumb.frame.centerx - self.thumb.frame.w // 2
+            width = self.frame.w - self.thumb.frame.w
+            t = percent_px / float(width)
             value = self.low + t * (self.high - self.low)
             self.set_value(value, update_thumb=False)

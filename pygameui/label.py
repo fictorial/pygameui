@@ -47,12 +47,15 @@ class Label(view.View):
 
     """
 
-    def __init__(self, frame, text, text_color=theme.text_color,
-        text_shadow_color=theme.text_shadow_color, font=asset.default_font,
-        padding=(theme.padding, theme.padding), wrap_mode=CLIP):
+    def __init__(self, frame, text,
+                 text_color=theme.text_color,
+                 text_shadow_color=theme.text_shadow_color,
+                 font=theme.default_font,
+                 padding=(theme.padding, theme.padding),
+                 wrap_mode=CLIP):
 
         view.View.__init__(self, frame)
-        self.font = font or asset.default_font
+        self.font = font or theme.default_font
         self._padding = padding or theme.padding
         self.halign = CENTER
         self.valign = CENTER
@@ -126,7 +129,7 @@ class Label(view.View):
 
         text = text.replace("\r\n", "\n").replace("\r", "\n")
         wants_shadows = (self.shadow_color is not None and
-            self.shadow_offset is not None)
+                         self.shadow_offset is not None)
 
         if self.auto_resize_font or self.wrap_mode == CLIP:
             self._text = re.sub(r'[\n\t]{2, }', ' ', text)
@@ -205,8 +208,8 @@ class Label(view.View):
             elif self.halign == LEFT:
                 x = self._padding[0]
             elif self.halign == RIGHT:
-                x = self.frame.w - 1 - self._padding[0] - \
-                    text_surface.get_size()[0]
+                x = (self.frame.w - 1 - self._padding[0] -
+                     text_surface.get_size()[0])
 
             if wants_shadows:
                 text_shadow_surface = self.text_shadow_surfaces[index]

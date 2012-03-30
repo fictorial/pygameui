@@ -16,8 +16,9 @@ class ImageButton(view.View):
     """
 
     def __init__(self, frame, image):
-        frame.size = (image.get_size()[0] + theme.padding * 2,
-                      image.get_size()[1] + theme.padding * 2)
+        frame.size = (
+            image.get_size()[0] + theme.padding * 2,
+            image.get_size()[1] + theme.padding * 2)
         view.View.__init__(self, frame)
         self.on_clicked = callback.Signal()
         self.decorate()
