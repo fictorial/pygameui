@@ -2,6 +2,8 @@
 
 A simple GUI framework for PyGame.
 
+![](https://github.com/fictorial/pygameui/raw/master/screenshot.png)
+
 ## Installation
 
 Currently, you have to clone this repo.
