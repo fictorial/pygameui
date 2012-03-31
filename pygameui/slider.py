@@ -105,11 +105,18 @@ class SliderView(view.View):
 
     @value.setter
     def value(self, val):
+        self._set_value(val)
+
+    def _set_value(self, val, update_thumb=True):
         if val == self._value:
             return
+
         self._value = max(self.low, min(self.high, val))
         self.track.value_percent = (val - self.low) / (self.high - self.low)
-        self._update_thumb()
+
+        if update_thumb:
+            self._update_thumb()
+
         self.on_value_changed(self, self._value)
 
     def appeared(self):
@@ -133,7 +140,7 @@ class SliderView(view.View):
             height = self.frame.h - self.thumb.frame.h
             t = percent_px / float(height)
             value = self.high + t * (self.low - self.high)
-            self.value = value
+            self._set_value(value, False)
         else:
             self.thumb.frame.centery = self.frame.h // 2
             self.thumb.frame.left = max(0, self.thumb.frame.left)
@@ -142,4 +149,4 @@ class SliderView(view.View):
             width = self.frame.w - self.thumb.frame.w
             t = percent_px / float(width)
             value = self.low + t * (self.high - self.low)
-            self.value = value
+            self._set_value(value, False)
