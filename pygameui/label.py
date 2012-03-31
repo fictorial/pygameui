@@ -11,7 +11,7 @@ RIGHT = 2
 TOP = 3
 BOTTOM = 4
 
-WORDWRAP = 0
+WORD_WRAP = 0
 CLIP = 1
 
 
@@ -23,7 +23,7 @@ class Label(view.View):
 
     halign -- CENTER, LEFT, or RIGHT. Horizontal alignment of text.
     valign -- CENTER, TOP, or BOTTOM. Vertical alignment of text.
-    wrap_mode -- WORDWRAP or CLIP. Determines how text is wrapped to
+    wrap_mode -- WORD_WRAP or CLIP. Determines how text is wrapped to
                  fit within the label's frame width-wise. Text that is
                  wrapped to multiple rendered lines is clipped at the
                  bottom of the frame. After setting the text attribute,
@@ -55,7 +55,7 @@ class Label(view.View):
         self.valign = CENTER
         self.auto_resize_font = False
         self.wrap_mode = wrap_mode
-        assert wrap_mode in (WORDWRAP, CLIP)
+        assert wrap_mode in (WORD_WRAP, CLIP)
         self._text_color = text_color
         self.shadow_color = text_shadow_color
         self.shadow_offset = (0, 1)
@@ -169,7 +169,7 @@ class Label(view.View):
                 self._resize_font_to_fit()
 
             self.text_size = self._render_line(self._text, wants_shadows)
-        elif self.wrap_mode == WORDWRAP:
+        elif self.wrap_mode == WORD_WRAP:
             self._render_word_wrapped(text, wants_shadows)
 
     def shrink_wrap(self):

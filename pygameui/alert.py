@@ -22,7 +22,7 @@ class AlertView(dialog.DialogView):
 
         message_label = label.Label(pygame.Rect(
             padding, 0, buttons_width, 1),
-            message, wrap_mode=label.WORDWRAP)
+            message, wrap_mode=label.WORD_WRAP)
         message_label.shrink_wrap()
         size = (buttons_width,
                 padding * 6 + theme.label_height +

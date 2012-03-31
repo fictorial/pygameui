@@ -29,7 +29,7 @@ class NotificationView(dialog.DialogView):
             (0, 0), (window.rect.w // 3, window.rect.h // 2)),
             msg, text_color=theme.dark_gray_color,
             font=theme.default_font,
-            wrap_mode=label.WORDWRAP)
+            wrap_mode=label.WORD_WRAP)
 
         message_label.shrink_wrap()
         text_size = message_label.text_size
