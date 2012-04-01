@@ -2,7 +2,7 @@ import pygame
 import render
 import theme
 import callback
-import asset
+import resource
 import focus
 
 
@@ -66,8 +66,8 @@ class View(object):
                                    self.frame.h + theme.shadow_size)
             self.surface = pygame.Surface(
                 shadowed_frame_size, pygame.SRCALPHA, 32)
-            shadow_image = asset.get_image('shadow')
-            self.shadow_image = asset.scale_image(
+            shadow_image = resource.get_image('shadow')
+            self.shadow_image = resource.scale_image(
                 shadow_image, shadowed_frame_size)
         else:
             self.surface = pygame.Surface(self.frame.size, pygame.SRCALPHA, 32)

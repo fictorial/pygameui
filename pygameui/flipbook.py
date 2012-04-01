@@ -1,7 +1,7 @@
 import pygame
 
 import view
-import asset
+import resource
 
 
 class FlipbookView(view.View):
@@ -19,13 +19,13 @@ class FlipbookView(view.View):
 
         frame.topleft -- where to position the view.
         frame.size -- size of each sub-image.
-        name -- name of the spritesheet image asset.
+        name -- name of the spritesheet image resource.
 
         """
 
         view.View.__init__(self, frame)
 
-        self.image = asset.get_image(name)
+        self.image = resource.get_image(name)
 
         self.frame_count = self.image.get_size()[0] // frame.size[0]
         self.current_frame = 0

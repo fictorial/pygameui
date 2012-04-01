@@ -33,7 +33,7 @@ AUTHOR = 'Brian Hammond <brian@fictorial.com>'
 COPYRIGHT = 'Copyright (C) 2012 Fictorial LLC.'
 LICENSE = 'MIT'
 
-__version__ = '0.5.1'
+__version__ = '0.1.0'
 
 
 import pygame
@@ -52,7 +52,7 @@ from listview import *
 from notification import *
 from progress import *
 from render import *
-from asset import *
+from resource import *
 from scroll import *
 from select import *
 from slider import *
@@ -68,12 +68,18 @@ import theme
 from scene import Scene
 
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 Rect = pygame.Rect
 window_surface = None
 
 
 def init(name='', window_size=(640, 480)):
+    logger.debug('init %s %s' % (__name__, __version__))
     pygame.init()
+    logger.debug('pygame %s' % pygame.__version__)
     pygame.key.set_repeat(200, 50)
     global window_surface
     window_surface = pygame.display.set_mode(window_size)
@@ -96,7 +102,7 @@ def run():
         elapsed += dt
         if elapsed > 5000:
             elapsed = 0
-            print clock.get_fps()
+            logger.debug('%d FPS', clock.get_fps())
 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:

@@ -1,7 +1,7 @@
 import re
 
 import view
-import asset
+import resource
 import theme
 
 
@@ -67,7 +67,7 @@ class Label(view.View):
     def _resize_font_to_fit(self):
         current_font_size = self.font.get_height()
         while current_font_size > self.min_font_size:
-            self.font = asset.getfont(current_font_size)
+            self.font = resource.get_font(current_font_size)
             size = self.font.size(self.text)
             padded_size = (size[0] + self._padding[0] * 2,
                            size[1] + self._padding[1] * 2)

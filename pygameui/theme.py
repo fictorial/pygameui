@@ -4,7 +4,7 @@ A pair of colors signifies a linear gradient.
 
 """
 
-import asset
+import resource
 
 
 default_font = None
@@ -56,5 +56,5 @@ cursor_blink_duration = 450  # ms
 def init():
     """Initialize theme support."""
     global default_font, default_bold_font
-    default_font = asset.get_font(font_size)
-    default_bold_font = asset.get_font(font_size, usebold=True)
+    default_font = resource.get_font(font_size)
+    default_bold_font = resource.get_font(font_size, use_bold=True)

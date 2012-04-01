@@ -1,7 +1,7 @@
 import pygame
 
 import view
-import asset
+import resource
 
 
 class ImageView(view.View):
@@ -34,13 +34,13 @@ class ImageView(view.View):
 
     @image.setter
     def image(self, image):
-        self.surface = asset.scale_image(image, self.frame.size)
+        self.surface = resource.scale_image(image, self.frame.size)
 
 
 def view_for_image_named(image_name):
     """Create an ImageView for the given image."""
 
-    image = asset.get_image(image_name)
+    image = resource.get_image(image_name)
     if not image:
         return None
     return ImageView(pygame.Rect((0, 0), image.get_size()), image)

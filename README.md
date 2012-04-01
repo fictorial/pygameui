@@ -1,27 +1,28 @@
 # pygameui
 
-A simple GUI framework for Pygame.
+A simple GUI framework for [Pygame](http://www.pygame.org).
 
 ![](https://github.com/fictorial/pygameui/raw/master/screenshot.png)
 
 ## Installation
 
-Currently, you have to clone this repository.
+    pip install pygameui
 
-## Usage
+While Pygame is listed as a dependency in our package metadata, you should
+[install it separately](http://www.pygame.org/install.html) of time to avoid
+issues with libpng being improperly referenced, etc.
 
-See samples/kitchensink.py for a demo.
+## Environment
+
+Tested on Mac OS X 10.7.3 running system Python 2.7.1 and Pygame installed via
+the "Lion apple supplied python" mpkg.
+
+Let me know if you have issues running this on other versions of Python and/or
+Pygame.
 
 ## Author
 
 Brian Hammond (brian@fictorial.com)
 
-## Copyright
-
 Copyright (c) 2012 Fictorial LLC.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
