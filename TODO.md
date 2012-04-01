@@ -2,8 +2,6 @@
 
 - better theming support; perhaps lookup by classname and state
 - gui builder tool that reads / writes pickles (versioning?)
-- distribution on PyPi; where does one include images / sounds / etc.?
-- github repo
 - support autoresize child views; springs and struts? 
 
 ## KNOWN ISSUES
