@@ -33,7 +33,7 @@ AUTHOR = 'Brian Hammond <brian@fictorial.com>'
 COPYRIGHT = 'Copyright (C) 2012 Fictorial LLC.'
 LICENSE = 'MIT'
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 import pygame

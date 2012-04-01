@@ -1,1 +1,2 @@
+include distribute_setup.py
 recursive-include pygameui/resources *
