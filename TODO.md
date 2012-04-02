@@ -1,8 +1,12 @@
 ## TO BE DONE
 
 - better theming support; perhaps lookup by classname and state
+    - add .state; use property and stylize after setting state
+        - maybe also emit a signal on_state_changed
+    - add stylize to View
 - gui builder tool that reads / writes pickles (versioning?)
 - support autoresize child views; springs and struts? 
+- color picker
 
 ## KNOWN ISSUES
 

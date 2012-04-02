@@ -105,10 +105,12 @@ class KitchenSinkScene(ui.Scene):
         self.notify_button.on_clicked.connect(self.show_notification)
         self.add_child(self.notify_button)
 
+        text_width = ui.theme.default_bold_font.size('Consume!')[0]
         self.task_button = ui.Button(ui.Rect(
             self.info_button.frame.left,
             self.info_button.frame.bottom + MARGIN,
-            150, ui.theme.button_height), 'Consume!')
+            text_width + ui.theme.padding * 2,
+            ui.theme.button_height), 'Consume!')
         self.task_button.on_clicked.connect(self.run_fake_task)
         self.add_child(self.task_button)
 
