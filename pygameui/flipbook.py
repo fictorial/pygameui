@@ -1,7 +1,6 @@
 import pygame
 
 import view
-import resource
 
 
 class FlipbookView(view.View):
@@ -14,28 +13,31 @@ class FlipbookView(view.View):
 
     """
 
-    def __init__(self, frame, name):
+    def __init__(self, frame, image, delay=1/10.0):
         """Create a flipbook view.
 
-        frame.topleft -- where to position the view.
-        frame.size -- size of each sub-image.
-        name -- name of the spritesheet image resource.
+        frame.topleft
+
+            where to position the view.
+
+        frame.size
+
+            size of each sub-image.
+
+        image
+
+            the spritesheet image.
 
         """
-
         view.View.__init__(self, frame)
-
-        self.image = resource.get_image(name)
-
+        self.image = image
         self.frame_count = self.image.get_size()[0] // frame.size[0]
         self.current_frame = 0
-
-        self.delay = 1 / 10.0
+        self.delay = delay
         self.elapsed = 0
 
     def update(self, dt):
         view.View.update(self, dt)
-
         self.elapsed += dt
         if self.elapsed > self.delay:
             self.current_frame = (self.current_frame + 1) % self.frame_count

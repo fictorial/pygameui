@@ -1,29 +1,26 @@
 import pygame
 
 import view
-import theme
 import focus
+import callback
 
 
 class DialogView(view.View):
-    """A non-modal dialog box."""
+    """A non-modal dialog box.
+
+    Signals
+
+        on_dismissed(dialog)
+    """
 
     def __init__(self, frame):
         view.View.__init__(self, frame)
-        self.background_color = theme.dialog_background_color
-        self.border_color = theme.border_color
-        self.border_width = 1
-        self.shadowed = True
-        self._update_surface()
-
-    def appeared(self):
-        view.View.appeared(self)
-        self.center()
-        self.focus()
+        self.on_dismissed = callback.Signal()
 
     def dismiss(self):
         self.rm()
         focus.set(None)
+        self.on_dismissed()
 
     def key_down(self, key, code):
         if key == pygame.K_ESCAPE:

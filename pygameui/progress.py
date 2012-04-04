@@ -1,17 +1,14 @@
 import slider
-import theme
 
 
 class ProgressView(slider.SliderView):
     """A progress bar."""
 
     def __init__(self, frame):
-        slider.SliderView.__init__(
-            self, frame, slider.HORIZONTAL,
-            0.0, 1.0, show_thumb=False)
-        self.interactive = False
+        slider.SliderView.__init__(self, frame, slider.HORIZONTAL,
+                                   0.0, 1.0, show_thumb=False)
+        self.enabled = False
         self.progress = 0
-        self.track.value_color = theme.progress_value_color
 
     @property
     def progress(self):

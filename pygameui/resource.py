@@ -38,6 +38,9 @@ def get_font(size, use_bold=False):
     return font
 
 
+# TODO update this to support multiple search paths
+
+
 def get_image(name):
     try:
         img = image_cache[name]

@@ -11,21 +11,22 @@ def push(scene):
     global current
     stack.append(scene)
     current = scene
-    current.appeared()
-    focus.set(current)
+    current.entered()
+    focus.set(None)
 
 
 def pop():
     global current
 
     if len(stack) > 0:
-        current.disappeared()
+        current.exited()
         stack.pop()
 
     if len(stack) > 0:
         current = stack[-1]
-        current.appeared()
-        focus.set(current)
+        current.entered()
+
+    focus.set(None)
 
 
 class Scene(view.View):
@@ -39,3 +40,9 @@ class Scene(view.View):
 
         if key == pygame.K_ESCAPE:
             pop()
+
+    def exited(self):
+        pass
+
+    def entered(self):
+        self.stylize()

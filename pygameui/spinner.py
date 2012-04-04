@@ -1,4 +1,5 @@
 import flipbook
+import resource
 
 
 class SpinnerView(flipbook.FlipbookView):
@@ -6,4 +7,5 @@ class SpinnerView(flipbook.FlipbookView):
 
     def __init__(self, frame):
         frame.size = (SpinnerView.size, SpinnerView.size)
-        flipbook.FlipbookView.__init__(self, frame, 'spinner')
+        image = resource.get_image('spinner')
+        flipbook.FlipbookView.__init__(self, frame, image)

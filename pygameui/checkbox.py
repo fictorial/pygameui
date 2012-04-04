@@ -2,16 +2,18 @@ import pygame
 
 import view
 import callback
-import theme
 import label
+import theme
+import focus
 
 
 class Checkbox(view.View):
     """A checkbox.
 
-    signals:
-    on_checked(checkbox)
-    on_unchecked(checkbox)
+    Signals
+
+        on_checked(checkbox)
+        on_unchecked(checkbox)
 
     """
 
@@ -20,57 +22,40 @@ class Checkbox(view.View):
 
         self.checked = False
 
-        check_size = frame.h
-        self.check_label = label.Label(pygame.Rect(
-            0, 0, check_size, check_size),
-            ' ', font=theme.default_bold_font)
-        self.check_label.interactive = True
-        self.check_label.border_color = theme.light_gray_color
-        self.check_label.border_width = 1
-        self.check_label.background_color = theme.view_background_color
-        self.check_label.on_mouse_down.connect(self._click_active)
-        self.check_label.on_mouse_up.connect(self._click_done)
-        self.check_label.on_blurred.connect(self._blurred)
-        self.check_label.on_mouse_up.connect(self.toggle)
+        check_frame = pygame.Rect(0, 0, 1, 1)
+        self.check_label = label.Label(check_frame, ' ')
         self.add_child(self.check_label)
 
-        self.label = label.Label(pygame.Rect(0, 0, 0, 0), text)
-        self.label.interactive = True
-        self.label.on_mouse_down.connect(self._click_active)
-        self.label.on_mouse_up.connect(self._click_done)
-        self.label.on_blurred.connect(self._blurred)
-        self.label.on_mouse_up.connect(self.toggle)
+        self.label = label.Label(pygame.Rect(0, 0, 1, 1), text)
         self.add_child(self.label)
 
         self.on_checked = callback.Signal()
         self.on_unchecked = callback.Signal()
 
-    def _layout(self):
-        view.View._layout(self)
+    def layout(self):
+        self.check_label.frame.topleft = self.padding
+        check_size = theme.current.label_height - self.padding[1] * 2
+        self.check_label.frame.w = check_size
+        self.check_label.frame.h = check_size
+        self.check_label.layout()
+
         self.label.shrink_wrap()
-        self.label.frame.left = self.check_label.frame.right + theme.padding
-        self.label.frame.centery = self.check_label.frame.centery
-        self.frame.w = self.label.frame.right
-        self._update_surface()
+        margin = max(self.check_label.margin[0], self.label.margin[0])
+        self.label.frame.top = self.padding[1]
+        self.label.frame.left = self.check_label.frame.right + margin
+        self.label.frame.h = check_size
+        self.label.layout()
 
-    def appeared(self):
-        view.View.appeared(self)
-        self._relayout()
+        self.frame.w = (self.check_label.frame.w + margin +
+                        self.label.frame.w + self.padding[0] * 2)
+        self.frame.h = theme.current.label_height
 
-    # it is possible to click in the padding b / w check_label and label
+        view.View.layout(self)
 
     def mouse_up(self, button, point):
         view.View.mouse_up(self, button, point)
         self.toggle()
-
-    def _click_active(self, lbl, mbtn, point):
-        self.check_label.background_color = theme.focused_view_background_color
-
-    def _click_done(self, lbl, mbtn, point):
-        self.check_label.background_color = theme.view_background_color
-
-    def _blurred(self):
-        self.check_label.background_color = theme.view_background_color
+        focus.set(None)
 
     def toggle(self, *args, **kwargs):
         self.checked = not self.checked

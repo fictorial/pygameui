@@ -1,7 +1,6 @@
 import pygame
 
 import view
-import theme
 import render
 import callback
 
@@ -10,26 +9,21 @@ HORIZONTAL = 0
 VERTICAL = 1
 
 
+SCROLLBAR_SIZE = 16
+
+
 class ScrollbarThumbView(view.View):
     """Draggable thumb of a scrollbar."""
 
     def __init__(self, direction):
-        size = theme.scrollbar_size
+        size = SCROLLBAR_SIZE
         view.View.__init__(self, pygame.Rect(0, 0, size, size))
         self.direction = direction
         self.draggable = True
-        self.background_color = theme.thumb_color
-        self.border_width = 1
-        self.border_color = theme.border_color
-
-    def focused(self):
-        self.background_color = theme.focused_thumb_color
-
-    def blurred(self):
-        self.background_color = theme.thumb_color
 
     def key_down(self, key, code):
-        """simulate mouse drag to scroll with keyboard"""
+        # Simulate mouse drag to scroll with keyboard.
+
         if self.direction == VERTICAL:
             if key == pygame.K_DOWN:
                 self.mouse_drag((0, 0), (0, 1))
@@ -43,31 +37,30 @@ class ScrollbarThumbView(view.View):
 
 
 class ScrollbarView(view.View):
-    """Ye olde scrollbar"""
+    """A scrollbar."""
 
     def __init__(self, scroll_view, direction):
         """Create a scrollbar for the given scrollable view."""
         if direction == VERTICAL:
-            height = scroll_view.frame.h - theme.scrollbar_size
-            frame = pygame.Rect(0, 0, theme.scrollbar_size, height)
+            height = scroll_view.frame.h - SCROLLBAR_SIZE
+            frame = pygame.Rect(0, 0, SCROLLBAR_SIZE, height)
             frame.right = scroll_view.frame.w
         else:
-            width = scroll_view.frame.w - theme.scrollbar_size
-            frame = pygame.Rect(0, 0, width, theme.scrollbar_size)
+            width = scroll_view.frame.w - SCROLLBAR_SIZE
+            frame = pygame.Rect(0, 0, width, SCROLLBAR_SIZE)
             frame.bottom = scroll_view.frame.h
         view.View.__init__(self, frame)
 
-        self.background_color = theme.scrollbar_background_color
-        self.border_width = 1
-        self.border_color = theme.border_color
         self.direction = direction
         self.scroll_view = scroll_view
 
         self.thumb = ScrollbarThumbView(self.direction)
         self.add_child(self.thumb)
 
-    def appeared(self):
-        self._update_offset()
+    def layout(self):
+        self._update_thumb()
+        self.thumb.layout()
+        view.View.layout(self)
 
     def _update_thumb(self):
         self.thumb.frame.top = max(0, self.thumb.frame.top)
@@ -77,54 +70,41 @@ class ScrollbarView(view.View):
         self.thumb.frame.right = min(self.frame.right, self.thumb.frame.right)
 
         if self.direction == VERTICAL:
-            overlap = 0
-            if not self.scroll_view.hscrollbar.hidden:
-                overlap = theme.scrollbar_size
-            else:
-                self.frame = pygame.Rect(
-                    0, 0, theme.scrollbar_size, self.scroll_view.frame.h)
-                self.frame.right = self.scroll_view.frame.w
-                self._relayout()
+            self.thumb.frame.centerx = SCROLLBAR_SIZE // 2
+        else:
+            self.thumb.frame.centery = SCROLLBAR_SIZE // 2
 
+        if self.direction == VERTICAL:
+            self.frame.right = self.scroll_view.frame.w
             off_x = self.scroll_view._content_offset[0]
-            off_y = self.thumb.frame.top / float(self.frame.h - overlap)
+            off_y = self.thumb.frame.top / float(self.frame.h)
             self.scroll_view.set_content_offset(off_x, off_y)
-
             percentage = (self.scroll_view.frame.h /
                           float(self.scroll_view.content_view.frame.h))
             self.thumb.frame.h = self.frame.h * percentage
             # self.hidden = (percentage >= 1)
         else:
-            overlap = 0
-            if not self.scroll_view.vscrollbar.hidden:
-                overlap = theme.scrollbar_size
-            else:
-                self.frame = pygame.Rect(0, 0,
-                    self.scroll_view.frame.w,
-                    theme.scrollbar_size)
-                self.frame.bottom = self.scroll_view.frame.h
-                self._relayout()
-
-            off_x = self.thumb.frame.left / float(self.frame.w - overlap)
+            self.frame.bottom = self.scroll_view.frame.h
+            off_x = self.thumb.frame.left / float(self.frame.w)
             off_y = self.scroll_view._content_offset[1]
             self.scroll_view.set_content_offset(off_x, off_y)
-
             percentage = (self.scroll_view.frame.w /
                           float(self.scroll_view.content_view.frame.w))
             self.thumb.frame.w = self.frame.w * percentage
             self.hidden = (percentage >= 1)
-        self.thumb._relayout()  # w or h altered
 
-    def _update_offset(self):
-        if self.direction == VERTICAL:
-            self.thumb.frame.centerx = theme.scrollbar_size // 2
-        else:
-            self.thumb.frame.centery = theme.scrollbar_size // 2
-        self._update_thumb()
+        if (self.direction == VERTICAL and
+            self.scroll_view.hscrollbar.hidden and
+            not self.scroll_view.vscrollbar.hidden):
+            self.frame.h = self.scroll_view.frame.h
+        elif (self.direction == HORIZONTAL and
+              self.scroll_view.vscrollbar.hidden and
+              not self.scroll_view.hscrollbar.hidden):
+            self.frame.w = self.scroll_view.frame.w
 
     def _child_dragged(self, child):
         assert child == self.thumb
-        self._update_offset()
+        self.layout()
 
     # Jump to offset at clicked point; does not allow dragging
     # without reclicking thumb
@@ -141,14 +121,16 @@ class ScrollbarView(view.View):
 class ScrollView(view.View):
     """A view that scrolls a content view
 
-    signals:
-    on_scrolled(scroll_view) -> content offset updated
+    Signals
+
+        on_scrolled(scroll_view)
+            content offset was updated.
 
     """
 
     def __init__(self, frame, content_view):
-        width = frame.size[0] + theme.scrollbar_size
-        height = frame.size[1] + theme.scrollbar_size
+        width = frame.size[0] + SCROLLBAR_SIZE
+        height = frame.size[1] + SCROLLBAR_SIZE
         rect = pygame.Rect(frame.topleft, (width, height))
         view.View.__init__(self, rect)
 
@@ -158,14 +140,15 @@ class ScrollView(view.View):
         self._content_offset = (0, 0)
         self.add_child(self.content_view)
 
-        self.vscrollbar = ScrollbarView(self, VERTICAL)
         self.hscrollbar = ScrollbarView(self, HORIZONTAL)
-        self.add_child(self.vscrollbar)
+        self.vscrollbar = ScrollbarView(self, VERTICAL)
         self.add_child(self.hscrollbar)
+        self.add_child(self.vscrollbar)
 
-        self.border_width = 1
-        self.border_color = theme.border_color
-        self.background_color = self.content_view.background_color
+    def layout(self):
+        self.hscrollbar.layout()
+        self.vscrollbar.layout()
+        view.View.layout(self)
 
     def set_content_offset(self, percent_w, percent_h,
                            update_scrollbar_size=True):
@@ -187,12 +170,11 @@ class ScrollView(view.View):
         if not view.View.draw(self):
             return False
 
-        if not self.vscrollbar.hidden or not self.hscrollbar.hidden:
-            hole = pygame.Rect(
-                self.vscrollbar.frame.left,
-                self.vscrollbar.frame.bottom,
-                theme.scrollbar_size,
-                theme.scrollbar_size)
-            render.fillrect(self.surface, theme.thumb_color, hole)
+        if not self.vscrollbar.hidden and not self.hscrollbar.hidden:
+            hole = pygame.Rect(self.vscrollbar.frame.left,
+                               self.vscrollbar.frame.bottom,
+                               SCROLLBAR_SIZE,
+                               SCROLLBAR_SIZE)
+            render.fillrect(self.surface, self.hole_color, hole)
 
         return True

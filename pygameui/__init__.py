@@ -114,11 +114,15 @@ def run():
 
             if e.type == pygame.MOUSEBUTTONDOWN:
                 hit_view = scene.current.hit(mousepoint)
-                if hit_view is not None:
+                logger.debug('hit %s' % hit_view)
+                if (hit_view is not None and
+                    not isinstance(hit_view, scene.Scene)):
                     focus.set(hit_view)
                     down_in_view = hit_view
                     pt = hit_view.from_window(mousepoint)
                     hit_view.mouse_down(e.button, pt)
+                else:
+                    focus.set(None)
             elif e.type == pygame.MOUSEBUTTONUP:
                 hit_view = scene.current.hit(mousepoint)
                 if hit_view is not None:

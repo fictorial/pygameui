@@ -1,7 +1,6 @@
 import pygame
 
 import view
-import theme
 import render
 import callback
 import scroll
@@ -17,10 +16,6 @@ class SliderTrackView(view.View):
     def __init__(self, frame, direction):
         view.View.__init__(self, frame)
         self.direction = direction
-        self.background_color = theme.slider_track_background_color
-        self.border_width = 1
-        self.border_color = theme.slider_border_color
-        self.value_color = theme.slider_value_color
         self.value_percent = 0.5
 
     def draw(self):
@@ -28,21 +23,18 @@ class SliderTrackView(view.View):
             return False
 
         if self.value_percent > 0:
+            t, l, b, r = self.get_border_widths()
             if self.direction == VERTICAL:
-                w = self.frame.w - self.border_width - 1
-                h = self.value_percent * self.frame.h - self.border_width - 1
-                x = self.border_width
-                y = self.frame.h - h + self.border_width
+                w = self.frame.w - r - l
+                h = self.value_percent * self.frame.h - b - t
+                y = self.frame.h - b - h
             else:
-                x = self.border_width
-                y = self.border_width
-                w = self.value_percent * self.frame.w - self.border_width - 1
-                h = self.frame.h - self.border_width
-
-            rect = pygame.Rect(x, y, w, h)
-            render.fillrect(
-                self.surface, self.value_color, rect=rect,
-                vertical=(self.direction == HORIZONTAL))
+                y = t
+                w = self.value_percent * self.frame.w - r - l
+                h = self.frame.h - b - t
+            rect = pygame.Rect(l, y, w, h)
+            render.fillrect(self.surface, self.value_color, rect=rect,
+                            vertical=(self.direction == HORIZONTAL))
 
         return True
 
@@ -50,7 +42,7 @@ class SliderTrackView(view.View):
 class SliderView(view.View):
     """Drag a thumb to select a value from a given range
 
-    signals:
+    Signals
     on_value_changed(sliderview, value)
 
     """
@@ -65,36 +57,30 @@ class SliderView(view.View):
         self.high = max(low, high)
 
         self.thumb = scroll.ScrollbarThumbView(self.direction)
-        self.thumb.border_width = 1
-        self.thumb.border_color = theme.border_color
         self.thumb.hidden = (not show_thumb)
-
         self._add_track(show_thumb)
         self.add_child(self.thumb)
 
         self._value = None
         self.value = (low + high) / 2.0
 
-        self.background_color = theme.clear_color
-
     def _add_track(self, show_thumb):
         if self.direction == HORIZONTAL:
-            trackh = self.thumb.frame.h - self.thumb.frame.h * 0.2
+            trackh = self.thumb.frame.h - self.thumb.frame.h // 4
             offset = 0
             if show_thumb:
                 offset = self.thumb.frame.w // 2
-            trackrect = pygame.Rect(
-                offset,
-                self.frame.h // 2 - trackh // 2,
-                self.frame.w - offset * 2, trackh)
+            trackrect = pygame.Rect(offset,
+                                    self.frame.h // 2 - trackh // 2,
+                                    self.frame.w - offset * 2, trackh)
         else:
-            track_width = self.thumb.frame.w - self.thumb.frame.w * 0.2
+            track_width = self.thumb.frame.w - self.thumb.frame.w // 4
             offset = 0
             if show_thumb:
                 offset = self.thumb.frame.h // 2
-            trackrect = pygame.Rect(
-                self.frame.w // 2 - track_width // 2,
-                offset, track_width, self.frame.h - offset * 2)
+            trackrect = pygame.Rect(self.frame.w // 2 - track_width // 2,
+                                    offset, track_width,
+                                    self.frame.h - offset * 2)
         self.track = SliderTrackView(trackrect, self.direction)
         self.add_child(self.track)
 
@@ -119,7 +105,7 @@ class SliderView(view.View):
 
         self.on_value_changed(self, self._value)
 
-    def appeared(self):
+    def parented(self):
         self._update_thumb()
 
     def _update_thumb(self):

@@ -3,7 +3,6 @@ import pygame
 import dialog
 import window
 import label
-import theme
 
 
 DOWN = 0
@@ -18,61 +17,70 @@ class NotificationView(dialog.DialogView):
     the window and can be closed by mouse clock or
     automatically close itself after a few seconds.
 
-    auto_close -- Automatically close the notification (default: True).
-    auto_close_after -- How long to wait before closing the
-                        notification (default: 3 (seconds)).
+    auto_close
+
+        Automatically close the notification;
+        default: True.
+
+    auto_close_after
+
+        How long to wait before closing the notification;
+        default: 3 (seconds).
 
     """
 
     def __init__(self, msg):
-        message_label = label.Label(pygame.Rect(
-            (0, 0), (window.rect.w // 3, window.rect.h // 2)),
-            msg, text_color=theme.dark_gray_color,
-            font=theme.default_font,
-            wrap_mode=label.WORD_WRAP)
+        frame = pygame.Rect(0, 0, window.rect.w // 3, window.rect.h // 2)
+        dialog.DialogView.__init__(self, frame)
 
-        message_label.shrink_wrap()
-        text_size = message_label.text_size
-        padding = min(20, window.rect.w // 8)
-        framesize = (text_size[0] + padding * 2,
-                     text_size[1] + padding * 2)
-        dialog.DialogView.__init__(self, pygame.Rect((0, 0), framesize))
-
-        self.background_color = theme.main_gradient_colors
-        self.border_color = theme.dark_accent_color
-        self.border_width = 2
+        self.message_label = label.Label(pygame.Rect((0, 0), frame.size),
+                                         msg, wrap=label.WORD_WRAP)
+        self.add_child(self.message_label)
 
         self.auto_close = True
         self.auto_close_after = 3
         self.elapsed = 0
 
-        message_label.frame.topleft = (padding, padding)
-        message_label.background_color = self.background_color
-        self.add_child(message_label)
+    def layout(self):
+        assert self.get_border_widths()[0] == 0   # top; check for animations
+        assert self.padding[0] == 0 and self.padding[1] == 0
+        self.message_label.shrink_wrap()
+        self.message_label.frame.w = self.frame.w
+        self.frame.h = self.message_label.frame.h
+        dialog.DialogView.layout(self)
 
-    def appeared(self):
+    def parented(self):
+        self.animation_state = DOWN
         self.frame.top = -self.frame.h
-        self.frame.centerx = window.rect.w // 2
-        self.state = DOWN
+        self.frame.centerx = self.parent.frame.w // 2
+        self.stylize()
 
     def mouse_down(self, button, point):
         dialog.DialogView.mouse_down(self, button, point)
-        self.state = UP
+        self.animation_state = UP
 
     def update(self, dt):
         dialog.DialogView.update(self, dt)
-        if self.state == DOWN:
-            if self.frame.top < -self.border_width:
-                self.frame.top += dt * self.frame.h * 3
-                self.frame.top = min(self.frame.top, -self.border_width)
+        rate = 300
+        if self.animation_state == DOWN:
+            if self.frame.top < 0:
+                self.frame.top += dt * rate
+                self.frame.top = min(self.frame.top, 0)
             else:
-                self.state = IDLE
-        elif self.state == UP:
+                self.animation_state = IDLE
+        elif self.animation_state == UP:
             if self.frame.top > -self.frame.h:
-                self.frame.top -= dt * self.frame.h * 3
+                self.frame.top -= dt * rate
             else:
                 self.rm()
-        elif self.state == IDLE:
+        elif self.animation_state == IDLE:
             self.elapsed += dt
             if self.elapsed > self.auto_close_after:
-                self.state = UP
+                self.animation_state = UP
+
+
+def show_notification(message):
+    notification = NotificationView(message)
+    import scene
+    scene.current.add_child(notification)
+    notification.stylize()
