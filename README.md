@@ -1,16 +1,10 @@
 # pygameui
 
-A simple GUI framework for [Pygame](http://www.pygame.org).
+A dead-simple UI for Pygame written during a quick 2-3 hour hack.
 
-![](https://github.com/fictorial/pygameui/raw/master/screenshot.png)
+Hopefully this is useful for your game prototypes.
 
-## Installation
-
-    pip install pygameui
-
-While Pygame is listed as a dependency in our package metadata, you should
-[install it separately](http://www.pygame.org/install.html) ahead of time to
-avoid issues with libpng being improperly referenced, etc.
+![](https://github.com/fictorial/pygameui/raw/simpler/screenshot.png)
 
 ## Environment
 
