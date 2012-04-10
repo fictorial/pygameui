@@ -23,3 +23,7 @@ running this on other versions of Python and/or Pygame.
 Brian Hammond (brian@fictorial.com)
 
 Copyright © 2012 Fictorial LLC.
+
+## Other
+
+See the `simpler` branch for a much simpler version.
