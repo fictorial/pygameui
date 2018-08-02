@@ -74,7 +74,7 @@ def value_for_keypath(obj, path):
     return val
 
 
-def set_value_for_keypath(obj, path, new_value):
+def set_value_for_keypath(obj, path, new_value, preserve_child = False):
     """Set attribute value new_value at key path of start object obj.
     """
     parts = path.split('.')
@@ -98,7 +98,13 @@ def set_value_for_keypath(obj, path, new_value):
                 if isinstance(dst, dict):
                     dst[part] = new_value
                 else:
-                    setattr(dst, part, new_value)
+                    if not preserve_child:
+                        setattr(dst, part, new_value)
+                    else:
+                        try:
+                            v = getattr(dst, part)
+                        except AttributeError:
+                            setattr(dst, part, new_value)
 
 
 if __name__ == '__main__':
