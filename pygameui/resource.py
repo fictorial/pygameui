@@ -16,10 +16,12 @@ sound_cache = weakref.WeakValueDictionary()
 package_name = 'pygameui'
 
 
-def get_font(size, use_bold=False):
+def get_font(size, use_bold=False, font=None):
     filename = 'regular'
     if use_bold:
         filename = 'bold'
+    if font is not None:
+      filename = font
     key = '%s:%d' % (filename, size)
     try:
         font = font_cache[key]
